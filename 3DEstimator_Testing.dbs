@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="MongoDb" database="MongoDb" id="1b50d12b-c1a7-4c1c-8745-d7dd4a4b100e" >
+	<schema name="users" >
+		<table name="Admin" prior="Building" virtual="y" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="userName" prior="f_name" type="string" jt="12" />
+			<column name="email" type="string" jt="12" />
+			<column name="password" type="regex" jt="12" />
+			<column name="role" type="enum" jt="12" >
+				<defo><![CDATA['admin']]></defo>
+				<enumeration><![CDATA[admin, superAdmin, manager, leadOwner, leadOwnerAssist]]></enumeration>
+			</column>
+			<column name="status" type="string" jt="12" >
+				<defo><![CDATA['active']]></defo>
+			</column>
+			<column name="createdAt" type="date" jt="91" />
+			<column name="updatedAt" type="date" jt="91" />
+		</table>
+		<table name="Building" prior="building" >
+			<column name="_id" type="objectId" jt="-8" />
+			<column name="build_id" type="objectId" jt="-8" />
+			<column name="All the remaining info..." type="objectId" jt="-8" />
+			<index name="unq_Building_build_id" unique="UNIQUE_KEY" >
+				<column name="build_id" />
+			</index>
+		</table>
+		<table name="Quotes" prior="Quote" virtual="y" >
+			<column name="_id" type="objectId" jt="-8" />
+			<column name="leadId" type="objectId" jt="-8" />
+			<column name="more info....." type="objectId" jt="-8" />
+			<fk name="fk_quotes_leads_0" virtual="y" to_schema="users" to_table="leads" >
+				<fk_column name="leadId" pk="_id" />
+			</fk>
+		</table>
+		<table name="leads" prior="lead" virtual="y" >
+			<column name="_id" type="objectId" jt="-8" />
+			<column name="f_name" type="string" jt="12" />
+			<column name="l_name" type="string" jt="12" />
+			<column name="email" type="string" jt="12" />
+			<column name="phone no" type="int" jt="4" />
+			<column name="zip_code" type="int" jt="4" />
+			<column name="leadOwner" type="objectId" jt="-8" />
+			<column name="leadOwnerAssist" type="objectId" jt="-8" />
+			<column name="Address" type="string" jt="12" />
+			<column name="build_type" type="array[object]" jt="4999545" >
+				<defo><![CDATA['carport']]></defo>
+				<enumeration><![CDATA[carport , garage, barn]]></enumeration>
+				<column name="carport" type="array[object]" jt="4999545" >
+					<column name="regularCarport" type="objectId" jt="-8" />
+				</column>
+				<column name="garage" type="array[object]" jt="4999545" >
+					<column name="leanGarage" type="objectId" jt="-8" />
+					<column name="regularGarage" type="objectId" jt="-8" />
+				</column>
+				<column name="barn" type="array[object]" jt="4999545" >
+					<column name="Carolina barn" type="objectId" jt="-8" />
+					<column name="Seneca Barn" type="objectId" jt="-8" />
+					<column name="Horse Barn" type="objectId" jt="-8" />
+					<column name="Regular Barn" type="objectId" jt="-8" />
+				</column>
+			</column>
+			<column name="build_info" type="objectId" jt="-8" />
+			<column name="createdAt" type="date" jt="91" />
+			<column name="updtedAt" type="date" jt="91" />
+			<index name="unq_leads__id" unique="UNIQUE_KEY" >
+				<column name="_id" />
+			</index>
+			<fk name="fk_carport" virtual="y" to_schema="users" to_table="Building" >
+				<fk_column name="build_type.carport" pk="build_id" />
+			</fk>
+			<fk name="fk_garage" virtual="y" to_schema="users" to_table="Building" >
+				<fk_column name="build_type.garage" pk="build_id" />
+			</fk>
+			<fk name="fk_barn" virtual="y" to_schema="users" to_table="Building" >
+				<fk_column name="build_type.barn" pk="build_id" />
+			</fk>
+			<fk name="fk_leads_building" virtual="y" to_schema="users" to_table="Building" >
+				<fk_column name="build_type" pk="build_id" />
+			</fk>
+			<fk name="fk_regularCarport" virtual="y" to_schema="users" to_table="Building" >
+				<fk_column name="build_type.carport.regularCarport" pk="build_id" />
+			</fk>
+			<fk name="fk_regularGarage" virtual="y" to_schema="users" to_table="Building" >
+				<fk_column name="build_type.garage.regularGarage" pk="build_id" />
+			</fk>
+			<fk name="fk_leanGarage" virtual="y" to_schema="users" to_table="Building" >
+				<fk_column name="build_type.garage.leanGarage" pk="build_id" />
+			</fk>
+			<fk name="fk_carolinaBarn" virtual="y" to_schema="users" to_table="Building" >
+				<fk_column name="build_type.barn.Carolina barn" pk="build_id" />
+			</fk>
+			<fk name="fk_SenecaBarn" virtual="y" to_schema="users" to_table="Building" >
+				<fk_column name="build_type.barn.Seneca Barn" pk="build_id" />
+			</fk>
+			<fk name="fk_HorseBarn" virtual="y" to_schema="users" to_table="Building" >
+				<fk_column name="build_type.barn.Horse Barn" pk="build_id" />
+			</fk>
+			<fk name="fk_regularBarn" virtual="y" to_schema="users" to_table="Building" >
+				<fk_column name="build_type.barn.Regular Barn" pk="build_id" />
+			</fk>
+		</table>
+	</schema>
+	<layout name="Main Diagram" id="9f4f8443-5dbc-4024-8540-f2abc8c73225" joined_routing="y" deduced_fks="y" show_column_type="y" show_relation="fk_name" >
+		<entity schema="users" name="Admin" color="C1D8EE" x="57" y="76" />
+		<entity schema="users" name="Building" color="EEE3C1" x="836" y="209" />
+		<entity schema="users" name="Quotes" color="E7C1EE" x="684" y="57" />
+		<entity schema="users" name="leads" color="C1EEEA" x="304" y="57" >
+			<column name="_id" />
+			<column name="f_name" />
+			<column name="l_name" />
+			<column name="email" />
+			<column name="phone no" />
+			<column name="zip_code" />
+			<column name="leadOwner" />
+			<column name="leadOwnerAssist" />
+			<column name="Address" />
+			<column name="build_type" expanded="y" />
+			<column name="build_type.carport" expanded="y" />
+			<column name="build_type.carport.regularCarport" />
+			<column name="build_type.garage" expanded="y" />
+			<column name="build_type.garage.leanGarage" />
+			<column name="build_type.garage.regularGarage" />
+			<column name="build_type.barn" expanded="y" />
+			<column name="build_type.barn.Carolina barn" />
+			<column name="build_type.barn.Seneca Barn" />
+			<column name="build_type.barn.Horse Barn" />
+			<column name="build_type.barn.Regular Barn" />
+			<column name="build_info" />
+			<column name="createdAt" />
+			<column name="updtedAt" />
+		</entity>
+		<script name="building" id="a2154c75-6803-4046-9b1c-b77ea710d9d5" language="SQL" >
+			<string><![CDATA[users.building.deleteOne({ _id: "6819cc4b2b4f0606a381899f" })]]></string>
+		</script>
+		<query id="15bd85eb-d064-45d8-8070-ee7ccb5859b7" name="fk_carport" >
+			<query_table schema="users" name="Building" alias="" x="57" y="57" >
+				<column name="_id" />
+				<column name="build_id" />
+				<column name="All the remaining info..." />
+				<query_table schema="users" name="leads" alias="" x="323" y="57" fk="fk_carport" type="Inner Join" />
+			</query_table>
+		</query>
+	</layout>
+	<layout name="~Diagram with Sample Tools" id="12ab10a9-10cf-45ee-8c0c-cd8d79f41dbc" show_column_type="y" show_relation="columns" >
+		<script name="Query Editor" id="99703f0a-85f3-41f0-bd8c-ddcaf083d8cc" language="SQL" >
+			<string><![CDATA[users.building .find()
+users.building .find()
+users.building .find()
+users.building .find()
+users.building .find()
+users.building .find()
+users.building .find()
+users.building .find()
+users.building .find()
+users.building .find()
+users.building .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.getCollection('myApp').insertMany([{ "userName" : "", "password" : "", "role" : "", "createdAt" : "2016-01-01T00:00:00.000Z", "updatedAt" : "2016-01-01T00:00:00.000Z" }]);
+users.getCollection('myApp').insertMany([{ "userName" : "", "password" : "", "role" : "", "createdAt" : "2016-01-01T00:00:00.000Z", "updatedAt" : "2016-01-01T00:00:00.000Z" }]);
+users.getCollection('myApp').insertMany([{ "userName" : "", "password" : "", "role" : "", "createdAt" : "2016-01-01T00:00:00.000Z", "updatedAt" : "2016-01-01T00:00:00.000Z" }]);
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+users.myApp .find()
+CREATE DATABASE 'users'
+client.db("userInfo")
+db = client.db("userInfo")
+db.userInfo.insertOne({ userName: "Abel", password: "abc", role: "superAdmin", createdAt: new Date("2025-03-19"), updatedAt: null })
+db.oplog.rs.insertOne({ userName: "Abel", password: "abc", role: "superAdmin", createdAt: new Date("2025-03-19"), updatedAt: null })
+db.oplog.rs.insert({ userName: "Abel", password: "abc", role: "superAdmin", createdAt: new Date("2025-03-19"), updatedAt: null })
+db.oplog.rs.insertOne({ userName: "Abel", password: "abc", role: "superAdmin", createdAt: new Date("2025-03-19"), updatedAt: null })
+local.getCollection('oplog.rs') .find()
+local.getCollection('oplog.rs').find()
+
+//OR
+
+USE local;
+db.oplog.rs.find()
+
+//OR
+
+USE local;
+db.getCollection('oplog.rs').find()]]></string>
+		</script>
+	</layout>
+</project>
